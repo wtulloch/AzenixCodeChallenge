@@ -10,7 +10,7 @@ namespace LogParser
     public record LogEntry
     {
         public IPAddress IpAddress { get; set; }
-        public DateTime Timestamp { get; set; }
+        public DateTime? Timestamp { get; set; }
         public string HttpVerb { get; set; }
         public string Resource { get; set; }
         public int  HttpStatusCode { get; set; }

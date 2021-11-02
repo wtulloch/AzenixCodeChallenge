@@ -2,6 +2,7 @@ using LogParser.Transforms;
 using System;
 using Xunit;
 using Shouldly;
+using LogParser;
 
 namespace LogParserTests
 {

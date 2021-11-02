@@ -15,7 +15,9 @@ namespace LogParser.Transforms
                 return new RequestInfo();
             }
 
-            var split = input.Split(' ');
+            var trimInput = input.Trim('"');
+
+            var split = trimInput.Split(' ');
 
             return new RequestInfo { HttpVerb = split[0], Request = split[1] };
         }

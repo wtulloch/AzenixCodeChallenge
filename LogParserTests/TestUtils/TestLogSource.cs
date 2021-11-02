@@ -17,12 +17,18 @@ namespace LogParserTests.TestUtils
            using var stream = ReadResource("TestUtils", "example-data.log");
            
             using var reader = new StreamReader(stream);
+            string? currentLine;
+            var logs = new List<string>();
 
+
+            while ((currentLine = reader.ReadLine()) != null)
+            {
+                logs.Add(currentLine);
+            }
 
             var line = reader.ReadLine();
 
-            return new List<string> { line };
-
+            return logs;
         }
 
         private static Stream ReadResource(string folder, string fileName)
