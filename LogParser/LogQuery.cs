@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace LogParser
@@ -17,7 +18,21 @@ namespace LogParser
 
         public List<string> GetTopThreeMostVisitedUrls(List<LogEntry> logEntries, string baseUrl="")
         {
-            return new List<string>();
+            var rx = new Regex(@"/\w*", RegexOptions.Compiled);
+
+            var urls = logEntries.Where(le => le.HttpStatusCode == 200)
+                .Select(le => le.Resource)
+                .Where(s => !(s.Contains(".js") || s.Contains(".css")))
+                .Select(s => s.Replace(baseUrl,""));
+
+           var groupUrls = urls.GroupBy(s => rx.Match(s).Value);
+
+            var returnUrls = groupUrls.OrderByDescending(g => g.Count())
+                            .Select(g => g.Key)
+                            .Take(3);
+
+
+            return returnUrls.ToList();
         }
     }
 
