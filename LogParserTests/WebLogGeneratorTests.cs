@@ -43,7 +43,7 @@ namespace LogParserTests
 
             var expectedLogEntry = new LogEntry
             {
-                IpAddress = IPAddress.Parse("177.71.128.21"),
+                ClientIpAddress = IPAddress.Parse("177.71.128.21"),
                 Timestamp = new DateTime(2018, 7, 11, 6, 21, 28),
                 HttpVerb = "GET",
                 Resource = "/intranet-analytics/",

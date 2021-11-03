@@ -20,23 +20,33 @@ namespace LogParserTests
         }
 
         [Fact]
-        public void GetNumberOfUniqueIpAddress_Given3LogEntries_With2UniqueIpAddresses_ReturnsTheValue2()
+        public void GetNumberOfUniqueClientIpAddress_Given3LogEntries_With2UniqueIpAddresses_ReturnsTheValue2()
         {
             var logEntries = new List<LogEntry> { CreateRequestInfo("127.1.120.125", DateTime.Now,"/home/"),
                  CreateRequestInfo("127.1.120.125", DateTime.Now,"/home/personal/"),
                   CreateRequestInfo("182.1.200.101", DateTime.Now,"/home/")
             };
 
-            var result = _logQuery.GetNumberOfUniqueIpAddress(logEntries);
+            var result = _logQuery.GetNumberOfUniqueClientIpAddresses(logEntries);
 
             result.ShouldBe(2);
+        }
+
+        [Fact]
+        public void GetNumberOfUniqueClientIpAddress_GivenAnEmptyList_ReturnsZero()
+        {
+            var logEntries = new List<LogEntry>();
+
+            var result = _logQuery.GetNumberOfUniqueClientIpAddresses(logEntries);
+
+            result.ShouldBe(0);
         }
 
         private LogEntry CreateRequestInfo(string ipAddress, DateTime timetamp, string resourcePath)
         {
             return new LogEntry
             {
-                IpAddress = IPAddress.Parse(ipAddress),
+                ClientIpAddress = IPAddress.Parse(ipAddress),
                 Timestamp = timetamp,
                 HttpStatusCode = 200,
                 HttpVerb = "GET",

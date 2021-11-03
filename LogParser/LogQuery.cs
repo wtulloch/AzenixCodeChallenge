@@ -10,9 +10,14 @@ namespace LogParser
     public class LogQuery
     {
 
-        public int GetNumberOfUniqueIpAddress(List<LogEntry> logEntries)
+        public int GetNumberOfUniqueClientIpAddresses(List<LogEntry> logEntries)
         {
             return logEntries.Distinct(new IpAddressComparer()).Count();
+        }
+
+        public List<string> GetTopThreeMostVisitedUrls(List<LogEntry> logEntries, string baseUrl="")
+        {
+            return new List<string>();
         }
     }
 
@@ -29,12 +34,12 @@ namespace LogParser
                 return false;
             }
 
-            return x.IpAddress.Equals(y.IpAddress);
+            return x.ClientIpAddress.Equals(y.ClientIpAddress);
         }
 
         public int GetHashCode([DisallowNull] LogEntry obj)
         {
-           return obj.IpAddress.GetHashCode();
+           return obj.ClientIpAddress.GetHashCode();
         }
     }
 }

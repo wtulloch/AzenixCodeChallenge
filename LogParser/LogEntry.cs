@@ -9,7 +9,7 @@ namespace LogParser
 {
     public record LogEntry
     {
-        public IPAddress IpAddress { get; set; }
+        public IPAddress ClientIpAddress { get; set; }
         public DateTime? Timestamp { get; set; }
         public string HttpVerb { get; set; }
         public string Resource { get; set; }

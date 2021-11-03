@@ -29,7 +29,7 @@ namespace LogParser
                     var groups = regEx.Match(log).Groups;
                     var resourceInfo = requestTransform.Apply(groups["request"].Value);
                     var logEntry = new LogEntry { 
-                        IpAddress = IPAddress.Parse(groups["ipAddress"].Value),
+                        ClientIpAddress = IPAddress.Parse(groups["ipAddress"].Value),
                         Timestamp = timestampTransform.Apply(groups["timestamp"].Value),
                         HttpVerb = resourceInfo.HttpVerb,
                         Resource = resourceInfo.Request,
