@@ -71,25 +71,4 @@ namespace LogParser
         }
     }
 
-    internal class DateIpAddressComparer : IEqualityComparer<LogEntry>
-    {
-        public bool Equals(LogEntry? x, LogEntry? y)
-        {
-            if (x == null && y == null)
-            {
-                return false;
-            }
-            if (x == null || y == null)
-            {
-                return false;
-            }
-
-            return (x.ClientIpAddress.Equals(y.ClientIpAddress) && x.Timestamp == y.Timestamp);
-        }
-
-        public int GetHashCode([DisallowNull] LogEntry obj)
-        {
-            return string.Concat(obj.ClientIpAddress.ToString(), obj.Timestamp.ToString()).GetHashCode() ;
-        }
-    }
 }
