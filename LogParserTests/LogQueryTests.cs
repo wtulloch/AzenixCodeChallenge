@@ -7,6 +7,7 @@ using LogParser;
 using Xunit;
 using Shouldly;
 using System.Net;
+using LogParserTests.TestUtils;
 
 namespace LogParserTests
 {
@@ -81,6 +82,19 @@ namespace LogParserTests
         }
 
         [Fact]
+        public void GetTopThreeMostVisitedUrls_ShouldWorkWithNoBaseUrlProperty()
+        {
+            var baseUrl = "http://example.com";
+            var logEntries = new List<LogEntry> {
+                CreateLogEntry("127.0.0.1", DateTime.Now, "/blog"),
+                CreateLogEntry("127.0.0.1", DateTime.Now,$"{baseUrl}/blog")
+            };
+            var results = _logQuery.GetTopThreeMostVisitedUrls(logEntries);
+
+            results.ShouldNotContain($"{baseUrl}/blog");
+        }
+
+        [Fact]
         public void GetTopThreeMostVisitedUrls_GivenTwoUniqueUrls_ReturnsTwoUrls()
         {
             var baseUrl = "http://example.com";
@@ -114,6 +128,18 @@ namespace LogParserTests
         }
 
 
+
+        [Fact]
+        [Trait("Category","integration")]
+        public async Task GetThreeMostedVistiedUrls_GivenSampleLog_ShouldWork()
+        {
+            var logSource = new TestLogSource();
+            var logEntries = await new WebLogGenerator().GetLogEntries(logSource);
+
+            var results = _logQuery.GetTopThreeMostVisitedUrls(logEntries);
+
+            results.Count.ShouldBeInRange(0, 3);
+        }
 
         private LogEntry CreateLogEntry(string ipAddress, DateTime timetamp, string resourcePath, int httpStatusCode = 200)
         {

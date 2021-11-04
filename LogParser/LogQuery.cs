@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -23,7 +24,7 @@ namespace LogParser
             var urls = logEntries.Where(le => le.HttpStatusCode == 200)
                 .Select(le => le.Resource)
                 .Where(s => !(s.Contains(".js") || s.Contains(".css")))
-                .Select(s => s.Replace(baseUrl,""));
+                .Select(s => (baseUrl == string.Empty ? s : s.Replace(baseUrl,"")));
 
            var groupUrls = urls.GroupBy(s => rx.Match(s).Value);
 
@@ -33,6 +34,11 @@ namespace LogParser
 
 
             return returnUrls.ToList();
+        }
+
+        public List<IPAddress> GetTopThreeMostActiveClientIpAddresses(List<LogEntry> logEntries)
+        {
+            return new List<IPAddress>();
         }
     }
 
