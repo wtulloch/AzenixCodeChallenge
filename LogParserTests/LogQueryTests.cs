@@ -141,6 +141,47 @@ namespace LogParserTests
             results.Count.ShouldBeInRange(0, 3);
         }
 
+        [Fact]
+        public void GetTopThreeMostActiveClientIpAddresses_GivenTheSameIpAddress_ReturnsOne()
+        {
+            var logEntries = new List<LogEntry> {
+                CreateLogEntry("127.0.0.1", DateTime.Now, "/blog"),
+                CreateLogEntry("127.0.0.1", DateTime.Now,"/blog/2021"),
+                CreateLogEntry("127.0.0.1", DateTime.Now, "/faq/test"),
+            };
+
+            var results = _logQuery.GetTopThreeMostActiveClientIpAddresses(logEntries);
+
+            results.ShouldBe(new [] { IPAddress.Parse("127.0.0.1") });
+        }
+
+        [Fact]
+        public void GetTopThreeMostActiveClientIpAddresses_GivenFourDifferentIpAddresses_ReturnsThree()
+        {
+            var logEntries = new List<LogEntry> {
+                CreateLogEntry("127.0.0.1", DateTime.Now, "/blog"),
+                CreateLogEntry("171.12.12.1", DateTime.Now,"/blog/2021"),
+                CreateLogEntry("127.0.0.1", DateTime.Now, "/faq/test"),
+                CreateLogEntry("192.7.12.4", DateTime.Now,"/blog/2021"),
+            };
+
+            var results = _logQuery.GetTopThreeMostActiveClientIpAddresses(logEntries);
+
+            results.Count.ShouldBe(3);
+        }
+
+        [Fact]
+        private async Task GetTopThreeMostActiveClientIpAddresses_GivenSampleLogFile_ReturnsTopThree()
+        {
+            var logSource = new TestLogSource();
+            var logEntries = await new WebLogGenerator().GetLogEntries(logSource);
+
+            var results = _logQuery.GetTopThreeMostActiveClientIpAddresses(logEntries);
+
+            results.ShouldBe(new[] { IPAddress.Parse("168.41.191.40"), IPAddress.Parse("177.71.128.21"), IPAddress.Parse("50.112.0.11") });
+
+        }
+        
         private LogEntry CreateLogEntry(string ipAddress, DateTime timetamp, string resourcePath, int httpStatusCode = 200)
         {
             return new LogEntry
