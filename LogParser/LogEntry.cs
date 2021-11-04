@@ -9,11 +9,11 @@ namespace LogParser
 {
     public record LogEntry
     {
-        public IPAddress ClientIpAddress { get; set; }
-        public DateTime? Timestamp { get; set; }
-        public string HttpVerb { get; set; }
-        public string Resource { get; set; }
-        public int  HttpStatusCode { get; set; }
+        public IPAddress ClientIpAddress { get; init; }
+        public DateTime? Timestamp { get; init; }
+        public string HttpVerb { get; init; }
+        public string Resource { get; init; }
+        public int  HttpStatusCode { get; init; }
 
     }
 }
